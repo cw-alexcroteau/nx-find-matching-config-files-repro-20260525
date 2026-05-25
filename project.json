@@ -1,0 +1,49 @@
+{
+  "name": "repro",
+  "$schema": "./node_modules/nx/schemas/project-schema.json",
+  "root": ".",
+  "projectType": "application",
+  "targets": {
+    "clean": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node ./scripts/clean-generated.mjs"
+      }
+    },
+    "generate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node ./scripts/generate-projects.mjs",
+        "forwardAllArgs": true
+      }
+    },
+    "benchmark-show-projects": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node ./scripts/benchmark-show-projects.mjs",
+        "forwardAllArgs": true
+      }
+    },
+    "capture-show-projects-perf": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node ./scripts/capture-show-projects-perf.mjs",
+        "forwardAllArgs": true
+      }
+    },
+    "compare-show-projects-perf": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node ./scripts/compare-show-projects-perf.mjs",
+        "forwardAllArgs": true
+      }
+    },
+    "benchmark-matcher": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node ./scripts/benchmark-matcher.mjs",
+        "forwardAllArgs": true
+      }
+    }
+  }
+}
