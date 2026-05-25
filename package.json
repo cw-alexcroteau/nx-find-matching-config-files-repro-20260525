@@ -1,15 +1,17 @@
 {
   "name": "nx-find-matching-config-files-repro",
   "private": true,
-  "packageManager": "yarn@1.22.22",
+  "packageManager": "pnpm@11.2.2",
   "scripts": {
-    "generate": "yarn nx run repro:generate --",
-    "clean": "yarn nx run repro:clean",
-    "benchmark:show-projects": "yarn nx run repro:benchmark-show-projects",
-    "benchmark:show-projects:perf": "yarn nx run repro:capture-show-projects-perf",
-    "compare:show-projects:perf": "yarn nx run repro:compare-show-projects-perf",
-    "benchmark:matcher": "yarn nx run repro:benchmark-matcher",
-    "show:projects": "yarn nx show projects --json"
+    "generate": "pnpm nx run repro:generate --",
+    "clean": "pnpm nx run repro:clean",
+    "benchmark:show-projects": "pnpm nx run repro:benchmark-show-projects",
+    "benchmark:show-projects:perf": "pnpm nx run repro:capture-show-projects-perf",
+    "compare:show-projects:perf": "pnpm nx run repro:compare-show-projects-perf",
+    "benchmark:matcher": "pnpm nx run repro:benchmark-matcher",
+    "ci:perf-report": "pnpm nx run repro:ci-perf-report --",
+    "ci:merge-perf-reports": "pnpm nx run repro:merge-perf-reports --",
+    "show:projects": "pnpm nx show projects --json"
   },
   "devDependencies": {
     "minimatch": "^9.0.5",

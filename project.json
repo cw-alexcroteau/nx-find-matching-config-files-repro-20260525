@@ -44,6 +44,20 @@
         "command": "node ./scripts/benchmark-matcher.mjs",
         "forwardAllArgs": true
       }
+    },
+    "ci-perf-report": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node ./scripts/ci-perf-report.mjs",
+        "forwardAllArgs": true
+      }
+    },
+    "merge-perf-reports": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node ./scripts/merge-perf-reports.mjs",
+        "forwardAllArgs": true
+      }
     }
   }
 }

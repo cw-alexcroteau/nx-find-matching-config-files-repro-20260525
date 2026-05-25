@@ -1,0 +1,90 @@
+name: Perf Report
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  benchmark:
+    name: ${{ matrix.name }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Ubuntu ARM
+            key: ubuntu-arm
+            runs-on: ubuntu-24.04-arm
+          - name: Windows 2025
+            key: windows-2025
+            runs-on: windows-2025
+          - name: macOS ARM
+            key: macos-arm
+            runs-on: macos-26-xlarge
+
+    runs-on: ${{ matrix.runs-on }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate projects
+        run: pnpm nx run repro:generate -- 1356
+
+      - name: Run perf report
+        run: pnpm nx run repro:ci-perf-report -- ${{ matrix.key }}
+
+      - name: Upload runner artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: perf-${{ matrix.key }}
+          path: artifacts/ci/${{ matrix.key }}
+          if-no-files-found: error
+
+  aggregate:
+    name: Aggregate Perf Report
+    needs: benchmark
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Download runner artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts/downloaded
+
+      - name: Merge perf reports
+        run: node ./scripts/merge-perf-reports.mjs artifacts/downloaded
+
+      - name: Publish workflow summary
+        run: cat artifacts/final/perf-report.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload merged perf report
+        uses: actions/upload-artifact@v4
+        with:
+          name: perf-report
+          path: artifacts/final
+          if-no-files-found: error

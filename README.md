@@ -15,13 +15,13 @@ Validated on May 25, 2026 against `nx@22.7.3`.
 ## Quick start
 
 ```bash
-yarn install
-yarn nx run repro:generate -- 1356
-yarn nx report
-yarn nx run repro:benchmark-show-projects
-yarn nx run repro:capture-show-projects-perf
-yarn nx run repro:compare-show-projects-perf
-yarn nx run repro:benchmark-matcher
+pnpm install
+pnpm nx run repro:generate -- 1356
+pnpm nx report
+pnpm nx run repro:benchmark-show-projects
+pnpm nx run repro:capture-show-projects-perf
+pnpm nx run repro:compare-show-projects-perf
+pnpm nx run repro:benchmark-matcher
 ```
 
 ## Expected outcome
@@ -52,11 +52,11 @@ It writes both perf logs to `artifacts/` and restores the original installed Nx 
 ## Useful commands
 
 ```bash
-yarn nx run repro:clean
-yarn nx run repro:generate -- 2000
-yarn nx run repro:capture-show-projects-perf
-yarn nx run repro:compare-show-projects-perf
-yarn show:projects
+pnpm nx run repro:clean
+pnpm nx run repro:generate -- 2000
+pnpm nx run repro:capture-show-projects-perf
+pnpm nx run repro:compare-show-projects-perf
+pnpm show:projects
 ```
 
 ## Verified reproduction steps
@@ -65,13 +65,13 @@ These are the exact steps used to validate the repro on the latest published Nx 
 
 ```bash
 cd /tmp/nx-find-matching-config-files-repro
-yarn install
-yarn nx run repro:generate -- 1356
-yarn nx report
-yarn nx run repro:benchmark-show-projects
-yarn nx run repro:capture-show-projects-perf
-yarn nx run repro:compare-show-projects-perf
-yarn nx run repro:benchmark-matcher
+pnpm install
+pnpm nx run repro:generate -- 1356
+pnpm nx report
+pnpm nx run repro:benchmark-show-projects
+pnpm nx run repro:capture-show-projects-perf
+pnpm nx run repro:compare-show-projects-perf
+pnpm nx run repro:benchmark-matcher
 ```
 
 ### Nx report
@@ -80,7 +80,7 @@ yarn nx run repro:benchmark-matcher
 Node           : 20.17.0
 OS             : darwin-arm64
 Native Target  : aarch64-macos
-yarn           : 1.22.22
+pnpm           : 11.2.2
 daemon         : Available
 
 nx  : 22.7.3
@@ -90,7 +90,7 @@ Cache Usage: 0.00 B / 46.04 GB
 
 ### Measured output
 
-`yarn nx run repro:benchmark-show-projects`
+`pnpm nx run repro:benchmark-show-projects`
 
 ```text
 run 01: 1008.3ms (1357 projects)
@@ -105,7 +105,7 @@ median: 1008.3ms
 average: 1013.8ms
 ```
 
-`yarn nx run repro:benchmark-matcher`
+`pnpm nx run repro:benchmark-matcher`
 
 ```text
 projects: 1356
@@ -146,11 +146,11 @@ The stronger optimization modeled by the temporary patch is to skip `minimatch(f
 ### Steps to Reproduce
 
 1. Clone this repo.
-2. Run `yarn install`.
-3. Run `yarn nx run repro:generate -- 1356` to create a workspace with 1,356 projects.
-4. Run `yarn nx run repro:capture-show-projects-perf` to capture Nx perf logs for `nx show projects --json`.
-5. Run `yarn nx run repro:compare-show-projects-perf` to compare stock vs patched Nx perf logs for the same command.
-6. Run `yarn nx run repro:benchmark-matcher` to isolate the `findMatchingConfigFiles` matcher hot path.
+2. Run `pnpm install`.
+3. Run `pnpm nx run repro:generate -- 1356` to create a workspace with 1,356 projects.
+4. Run `pnpm nx run repro:capture-show-projects-perf` to capture Nx perf logs for `nx show projects --json`.
+5. Run `pnpm nx run repro:compare-show-projects-perf` to compare stock vs patched Nx perf logs for the same command.
+6. Run `pnpm nx run repro:benchmark-matcher` to isolate the `findMatchingConfigFiles` matcher hot path.
 
 The end-to-end and perf-log commands run `nx show projects --json` with `NX_DAEMON=false`, `NX_CACHE_PROJECTS_CONFIG=false`, and `NX_PROJECT_GLOB_CACHE=false` so the project-discovery cost is paid on each run.
 
@@ -167,9 +167,9 @@ On `nx@22.7.3`, project discovery remains expensive on a workspace with 1,356 ge
 If you want to compare a stock Nx build against a locally patched one, the repro includes a temporary patch step that edits the installed `nx` package, runs the command, records the perf logs, and restores the original file automatically:
 
 ```bash
-yarn nx run repro:capture-show-projects-perf
-yarn nx run repro:compare-show-projects-perf
-yarn nx run repro:benchmark-matcher
+pnpm nx run repro:capture-show-projects-perf
+pnpm nx run repro:compare-show-projects-perf
+pnpm nx run repro:benchmark-matcher
 ```
 
 The generated perf logs are written under `artifacts/`.
@@ -185,4 +185,4 @@ This workspace defines a single root project named `repro` with these targets:
 - `repro:compare-show-projects-perf`
 - `repro:benchmark-matcher`
 
-Use `yarn nx show project repro --json` to inspect the target configuration.
+Use `pnpm nx show project repro --json` to inspect the target configuration.

@@ -4,3 +4,4 @@ dist
 tmp
 coverage
 artifacts
+nx-upstream-issue.md
