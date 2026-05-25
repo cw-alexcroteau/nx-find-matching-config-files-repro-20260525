@@ -22,9 +22,6 @@ jobs:
           - name: Windows 2025
             key: windows-2025
             runs-on: windows-2025
-          - name: macOS ARM
-            key: macos-arm
-            runs-on: macos-26-xlarge
 
     runs-on: ${{ matrix.runs-on }}
 
